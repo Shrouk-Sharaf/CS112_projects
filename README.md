@@ -1,6 +1,6 @@
 # Welcome To My Repo!
 
-##Subtract a Square Game
+## Subtract a Square Game
 Explore the fascinating world of mathematical strategy with the Subtract a Square game. This repository houses the code for a two-player game where participants take turns subtracting a square number from an initial total. The player who reaches zero on their turn is declared the winner.
 
 Features:
@@ -16,7 +16,7 @@ Clone the repository and execute the game script using a Python interpreter.
 Languages used: Python , C++
 
 
-##Binary Operations Playground
+## Binary Operations Playground
 This repository contains simple programs to perform binary addition and subtraction. Whether you're learning about binary arithmetic or just want a quick tool to perform these operations, this collection of scripts is here to help.
 
 Features:
