@@ -26,6 +26,13 @@ Binary Subtraction: Subtract one binary number from another effortlessly.
 Usage:
 Check out the examples folder for sample input and output. Feel free to integrate these scripts into your projects or educational materials.
 
+## List Equality Checker
+This repository hosts a simple Python script designed to check the equality of two lists. Whether you're comparing lists in your projects or just want a utility to verify equality, this tool can save you time and effort.
+
+Features:
+List Equality: Determine if two lists are equal, element-wise.
+
+Language used: Python
 Installation:
 Clone the repository and run the scripts using your preferred Python interpreter.
 
