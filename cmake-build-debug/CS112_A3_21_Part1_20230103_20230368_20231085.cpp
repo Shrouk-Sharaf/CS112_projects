@@ -1,4 +1,4 @@
-/*#include "Image_Class.h"
+#include "Image_Class.h"
 #include <cmath>
 #include <iostream>
 #include <string>
@@ -324,12 +324,72 @@ void Resizing() {
     resizedImage.saveImage(saved_file); // Save the resized image
     cout << "The image has been resized successfully" << endl;
 }
+void Purple(){
+    cout << "Please enter your file name" << endl;
+    string filename, new_file;
+    cin >> filename;
+    while (!isvalidExtension(filename)) {
+        cout << "invalid file name! please enter a valid one." << endl;
+        cin >> filename;
+    }
+    Image image(filename);
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            for (int k = 0; k < image.channels; k++) {
+                if (k == 1)
+                     image(i, j, k) = static_cast <unsigned char> (image(i, j, k) * 0.7);
+            }
+        }
+    }
+    cout << "Enter the filename and extension for the saved filtered image" << endl;
+    cin >> new_file;
+    while (!isvalidExtension(new_file)) {
+        cout << "invalid file name! please enter a valid one." << endl;
+        cin >> new_file;
+    }
+    image.saveImage(new_file);
+    cout << "Converted to purple successfully." << endl;
+}
+/*void Sepia(){
+    cout << "Please enter your file name" << endl;
+    string filename, new_file;
+    cin >> filename;
+    while (!isvalidExtension(filename)) {
+        cout << "invalid file name! please enter a valid one." << endl;
+        cin >> filename;
+    }
+    Image image(filename);
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            for (int k = 0; k < image.channels; k++) {
+                unsigned char originalRed = image(i, j, 0);
+                unsigned char originalGreen = image(i, j, 1);
+                unsigned char originalBlue = image(i, j, 2);
+                int sepiaRed = static_cast<int>(0.393 * originalRed + 0.769 * originalGreen + 0.189 * originalBlue);
+                int sepiaGreen = static_cast<int>(0.349 * originalRed + 0.686 * originalGreen + 0.168 * originalBlue);
+                int sepiaBlue = static_cast<int>(0.272 * originalRed + 0.534 * originalGreen + 0.131 * originalBlue);
+                image(i, j, 0) = min(255, sepiaRed);
+                image(i, j, 1) = min(255, sepiaGreen);
+                image(i, j, 2) = min(255, sepiaBlue);
+
+            }
+        }
+    }
+    cout << "Enter the filename and extension for the saved filtered image" << endl;
+    cin >> new_file;
+    while (!isvalidExtension(new_file)) {
+        cout << "invalid file name! please enter a valid one." << endl;
+        cin >> new_file;
+    }
+    image.saveImage(new_file);
+    cout << "The sepia filter was applied successfully." << endl;
+}*/
 int main() {
     while (true) {
         int choice;
         while (true) {
-            cout << "Choose one of the following filters:\n1) Convert to black and white\n2) Flip image\n3) Invert Image\n4) Add Frames to the image\n5) Gray scale\n6) Crop image\n7) Resize\n8) Exit\n";
-            if (!(cin >> choice) || (choice != 1 && choice != 2 && choice != 3 && choice != 4 && choice != 5 && choice != 6 && choice != 7 && choice != 8)) {
+            cout << "Choose one of the following filters:\n1) Convert to black and white\n2) Flip image\n3) Invert Image\n4) Add Frames to the image\n5) Gray scale\n6) Crop image\n7) Resize\n8) Purple filter\n9) Exit\n";
+            if (!(cin >> choice) || (choice != 1 && choice != 2 && choice != 3 && choice != 4 && choice != 5 && choice != 6 && choice != 7 && choice != 8 && choice != 9)) {
                 cout << "Invalid choice ! Please enter a valid option." << endl;
                 cin.clear();
                 while (cin.get() != '\n');
@@ -346,38 +406,15 @@ int main() {
             Framed_image();
         else if (choice == 5)
             Gray_scale();
-        else if (choice == 6) {
+        else if (choice == 6)
             CropImage();
-        }
         else if (choice == 7)
             Resizing();
-        else if (choice == 8) {
-            cout << "Program is terminating....";
+        else if (choice == 8)
+            Purple();
+        else if (choice == 9) {
+            cout << "Program  is terminating..." << endl;
             break;
         }
     }
-}*/
-#include "Image_Class.h"
-#include <iostream>
-#include <string>
-using namespace std;
-
-int main() {
-    string filename, saved_file;
-    cout << "Enter the file name of the image: " << endl;
-    cin >> filename;
-    Image image(filename);
-    for (int i = 0; i < image.width; i++) {
-        for (int j = 0; j < image.height; j++) {
-            for (int c = 0; c < image.channels; c++) {
-                unsigned char& pixel = image(i, j, c);
-                pixel /= 2;
-            }
-        }
-    }
-    cout << "Enter the name of the saved file: " << endl;
-    cin >> saved_file;
-    image.saveImage(saved_file);
-    cout << "Saved file name: " << saved_file << endl;
-    return 0;
 }
