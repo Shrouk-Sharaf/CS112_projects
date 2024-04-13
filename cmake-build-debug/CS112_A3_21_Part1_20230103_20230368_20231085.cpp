@@ -478,7 +478,7 @@ void Infrared(){
 }
 void EdgeDetection() {
     string filename, savedfile;
-    cout << "Enter the filename of the image" << endl;
+    cout << "Please enter your file name" << endl;
     cin >> filename;
     while(!isvalidExtension(filename)){
         cout<<"invalid input! please enter a valid one. "<<endl;
@@ -518,10 +518,10 @@ void EdgeDetection() {
             }
         }
     }
-    cout<<"Enter the name of the saved file:"<<endl;
+    cout<<"Enter the file name and the extension for the saved filtered image"<<endl;
     cin>>savedfile;
     while(!isvalidExtension(savedfile)){
-        cout<<"invalid input! please enter a valid input"<<endl;
+        cout<<"invalid input! please enter a valid one."<<endl;
         cin>>savedfile;
     }
     image.saveImage(savedfile);
@@ -532,7 +532,7 @@ void DarkeningOrLightening() {
     while (true) {
         cout << "Please choose:\n1) Darkening image\n2) Lightening image\n";
         if(!(cin>>choice)||(choice!=1 && choice!=2)){
-            cout<<"invalid choice! please enter 1 or 2"<<endl;
+            cout<<"invalid choice! please enter 1 or 2."<<endl;
             cin.clear();
             while(cin.get()!='\n');
         }
@@ -540,59 +540,55 @@ void DarkeningOrLightening() {
             break;
     }
     if (choice == 1) {
-        cout << "Welcome to Darkening image filter" << endl;
         string filename, savedFile;
-        cout << "Enter the file name of the image: "<<endl;
+        cout << "Please enter your file name "<<endl;
         cin >> filename;
         while(!isvalidExtension(filename)){
-            cout<<"invalid input, please enter a valid one "<<endl;
+            cout<<"invalid input! please enter a valid one. "<<endl;
             cin>>filename;
         }
         Image image(filename);
         for (int i = 0; i < image.width; i++) {
             for (int j = 0; j < image.height; j++) {
                 for (int k = 0; k < 3; k++) {
-                    // Corrected by explicitly casting the result to unsigned char
-                    image(i, j, k) = static_cast<unsigned char>(image(i, j, k) * 0.5);
+                    image(i, j, k) *= 0.5;
                 }
             }
         }
-        cout << "Enter the name of the saved file: "<<endl;
+        cout << "Enter the file name and the extension for the saved filtered image "<<endl;
         cin >> savedFile;
         while(!isvalidExtension(savedFile)){
-            cout<<"invalid input,please enter a valid one: "<<endl;
+            cout<<"invalid input! please enter a valid one."<<endl;
             cin>>savedFile;
         }
         image.saveImage(savedFile);
         cout << "The image has become darker successfully" << endl;
     }
     else if (choice == 2) {
-        cout << "Welcome to Lightening image filter" << endl;
         string filename, savedFile;
-        cout << "Enter the file name of the image: "<<endl;
+        cout << "Please enter your file name "<<endl;
         cin >> filename;
         while(!isvalidExtension(filename)){
-            cout<<"invalid input,please enter a valid one: "<<endl;
+            cout<<"invalid input! please enter a valid one. "<<endl;
             cin>>filename;
         }
         Image image(filename);
         for (int i = 0; i < image.width; i++) {
             for (int j = 0; j < image.height; j++) {
                 for (int k = 0; k < 3; k++) {
-                    // Corrected by handling the conversion explicitly and safely
-                    int value = static_cast<int>(1.5 * image(i, j, k));
+                    int value = 1.5 * image(i, j, k);
                     if (value > 255) {
                         image(i, j, k) = 255;
                     } else {
-                        image(i, j, k) = static_cast<unsigned char>(value);
+                        image(i, j, k) = value;
                     }
                 }
             }
         }
-        cout << "Enter the name of the saved file: "<<endl;
+        cout << "Enter the file name and the extension for the saved  filtered image "<<endl;
         cin >> savedFile;
         while(!isvalidExtension(savedFile)){
-            cout<<"invalid input,please enter a valid input: "<<endl;
+            cout<<"invalid input! please enter a valid input. "<<endl;
             cin>>savedFile;
         }
         image.saveImage(savedFile);
@@ -620,9 +616,9 @@ Image Resizing(Image image, int newWidth, int newHeight) {
     // Copy resized image to the original image
     return resizedImage;
 }
-void merging_image(string file_name1, string file_name2, const string& saved_file, int choice) {
-    Image image1(std::move(file_name1));
-    Image image2(std::move(file_name2));
+void merging_image(string file_name1, string file_name2, string saved_file, int choice) {
+    Image image1(file_name1);
+    Image image2(file_name2);
     if (choice == 1) {
         int max_width = max(image1.width, image2.width);
         int max_height = max(image1.height, image2.height);
@@ -644,35 +640,44 @@ void merging_image(string file_name1, string file_name2, const string& saved_fil
                 }
             }
         }
+        // Save merged image
         new_image.saveImage(saved_file);
-    } else if (choice == 2) {
+
+    } else if (choice == 2) {// merge using cropping
         int min_width=min(image1.width,image2.width);
         int min_height=min(image1.height,image2.height);
         Image new_image(min_width,min_height);
         // loop on the smallest width and smallest height
-        for(int i=0;i<min_width;i++){
-            for(int j=0;j<min_height;j++){
-                for(int k=0;k<3;k++){
+        for(int i=0;i<min_width;i++)
+        {
+            for(int j=0;j<min_height;j++)
+            {
+                for(int k=0;k<3;k++)
+                {
                     new_image(i,j,k)=(image1(i,j,k)+image2(i,j,k))/2;
                     if(new_image(i,j,k)>255)
+                    {
                         new_image(i,j,k)=255;
+                    }
                 }
             }
-        }
+        }//save the new image
         new_image.saveImage(saved_file);
+
     }
     else
-        cout<<"Invalid Input "<<endl;
+    {
+        cout<<"Invalid Input! please enter a valid one. "<<endl;
+    }
 }
 void MergeImagesAndSave() {
     string file_name1, file_name2, saved_file;
     int choice;
-    cout << "Welcome to merge effect" << endl;
-    cout << "Enter the file name of the first image: " << endl;
+    cout << "Please enter your first file name " << endl;
     cin >> file_name1;
-    cout << "Enter the file name of the second image: " << endl;
+    cout << "Please enter your second file name " << endl;
     cin >> file_name2;
-    cout << "Enter the saved file name" << endl;
+    cout << "Enter the file name and extension for the saved filtered image" << endl;
     cin >> saved_file;
     cout << "If two images have different dimensions what do you want to do this filter by:\n1)resizing\n2)cropping" << endl;
     cin >> choice;
