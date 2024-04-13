@@ -350,46 +350,111 @@ void Purple(){
     image.saveImage(new_file);
     cout << "Converted to purple successfully." << endl;
 }
-/*void Sepia(){
+void Rotate(){
+    string filename, saved_file;
     cout << "Please enter your file name" << endl;
-    string filename, new_file;
     cin >> filename;
     while (!isvalidExtension(filename)) {
         cout << "invalid file name! please enter a valid one." << endl;
         cin >> filename;
     }
     Image image(filename);
-    for (int i = 0; i < image.width; i++) {
-        for (int j = 0; j < image.height; j++) {
-            for (int k = 0; k < image.channels; k++) {
-                unsigned char originalRed = image(i, j, 0);
-                unsigned char originalGreen = image(i, j, 1);
-                unsigned char originalBlue = image(i, j, 2);
-                int sepiaRed = static_cast<int>(0.393 * originalRed + 0.769 * originalGreen + 0.189 * originalBlue);
-                int sepiaGreen = static_cast<int>(0.349 * originalRed + 0.686 * originalGreen + 0.168 * originalBlue);
-                int sepiaBlue = static_cast<int>(0.272 * originalRed + 0.534 * originalGreen + 0.131 * originalBlue);
-                image(i, j, 0) = min(255, sepiaRed);
-                image(i, j, 1) = min(255, sepiaGreen);
-                image(i, j, 2) = min(255, sepiaBlue);
+    int choice;
+    while (true) {
+        cout << "Choose one of the following:\n1) rotate 90 degree\n2) rotate 180 degree\n3) rotate 270 degree" << endl;
+        if (!(cin >> choice) || (choice != 1 && choice != 2 && choice != 3)) {
+            cout << "Invalid choice. Please enter 1 or 2 or 3." << endl;
+            cin.clear();
+            while (cin.get() != '\n');
+        } else {
+            break;
+        }
+    }
+    Image rotated_image (image.width , image.height);
 
+    if (choice == 1) {
+            for (int i = 0; i < image.height; ++i) {
+                for (int j = 0; j < image.width; ++j) {
+                    for (int k = 0; k < image.channels; ++k) {
+                        rotated_image(i, j, k) = image(j, image.height - i - 1, k);
+                    }
+                }
+            }
+    } else if (choice == 2) {
+        for (int i = 0; i < image.width; i++) {
+            for (int j = 0; j < image.height; j++) {
+                for (int k = 0; k < image.channels; k++) {
+                    rotated_image (i , j , k) = (image(i, j, k), image(i, image.height - 1 - j, k));
+                }
+            }
+        }
+    }else if (choice == 3){
+        for (int i = 0; i < image.height; ++i) {
+            for (int j = 0; j < image.width; ++j) {
+                for (int k = 0; k < image.channels; ++k) {
+                    rotated_image(i, j, k) = image(image.width - j - 1, i, k);
+                }
             }
         }
     }
     cout << "Enter the filename and extension for the saved filtered image" << endl;
-    cin >> new_file;
-    while (!isvalidExtension(new_file)) {
+    cin >> saved_file;
+    while (!isvalidExtension(saved_file)) {
         cout << "invalid file name! please enter a valid one." << endl;
-        cin >> new_file;
+        cin >> saved_file;
     }
-    image.saveImage(new_file);
-    cout << "The sepia filter was applied successfully." << endl;
-}*/
+    rotated_image.saveImage(saved_file);
+    cout << "rotated successfully." << endl;
+}
+void Blur(){
+    string filename, saved_file;
+    cout << "Please enter your file name" << endl;
+    cin >> filename;
+    while (!isvalidExtension(filename)) {
+        cout << "invalid file name! please enter a valid one." << endl;
+        cin >> filename;
+    }
+    Image image(filename);
+    Image blur(image.width, image.height);
+    for (int y = 0; y < image.height; ++y) {
+        for (int x = 0; x < image.width; ++x) {
+            int sum = 0;
+            int Red = 0, Green = 0, Blue = 0;
+            for (int ky = -20; ky <= 20; ++ky) {
+                for (int kx = -20; kx <= 20; ++kx) {
+                    int nx = x + kx;
+                    int ny = y + ky;
+                    if (nx >= 0 && nx < image.width && ny >= 0 && ny < image.height) {
+                        Red += image(nx, ny, 0);
+                        Green += image(nx, ny, 1);
+                        Blue += image(nx, ny, 2);
+                        sum++;
+                    }
+                }
+            }
+            unsigned char avg_Red = Red / sum;
+            unsigned char avg_Green = Green / sum;
+            unsigned char avg_Blue = Blue / sum;
+            blur(x, y, 0) = avg_Red;
+            blur(x, y, 1) = avg_Green;
+            blur(x, y, 2) = avg_Blue;
+        }
+    }
+    cout << "Enter the filename and extension for the saved filtered image" << endl;
+    cin >> saved_file;
+    while (!isvalidExtension(saved_file)) {
+        cout << "invalid file name! please enter a valid one." << endl;
+        cin >> saved_file;
+    }
+    blur.saveImage(saved_file);
+    cout << "rotated successfully." << endl;
+}
 int main() {
     while (true) {
         int choice;
         while (true) {
-            cout << "Choose one of the following filters:\n1) Convert to black and white\n2) Flip image\n3) Invert Image\n4) Add Frames to the image\n5) Gray scale\n6) Crop image\n7) Resize\n8) Purple filter\n9) Exit\n";
-            if (!(cin >> choice) || (choice != 1 && choice != 2 && choice != 3 && choice != 4 && choice != 5 && choice != 6 && choice != 7 && choice != 8 && choice != 9)) {
+            cout << "Choose one of the following filters:\n1) Convert to black and white\n2) Flip image\n3) Invert Image\n4) Add Frames to the image\n5) Gray scale\n6) Crop image\n7) Resize\n8) Purple filter\n9) Rotate\n10) Blur\n11) Exit\n";
+            if (!(cin >> choice) || choice < 1 || choice > 11) {
                 cout << "Invalid choice ! Please enter a valid option." << endl;
                 cin.clear();
                 while (cin.get() != '\n');
@@ -412,7 +477,11 @@ int main() {
             Resizing();
         else if (choice == 8)
             Purple();
-        else if (choice == 9) {
+        else if (choice == 9)
+            Rotate();
+        else if (choice == 10)
+            Blur();
+        else if (choice == 11) {
             cout << "Program  is terminating..." << endl;
             break;
         }
