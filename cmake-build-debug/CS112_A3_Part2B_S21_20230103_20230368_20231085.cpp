@@ -1,15 +1,21 @@
-// File: CS112_A3_21_Part1_20230103_20230368_20231085
+// File: CS112_A3_Part2B_S21_20230103_20230368_20231085
+
 // Purpose: This program includes 14 filters and a menu. The filters include black and white conversion, image flipping,
 //          image inverting, adding frames to pictures, and grayscale conversion, among others.
-// Author: Mahmoud Ahmed Ibrahim Mohamed, S22.
-// Author: Shrouk sayed Ahmed mohammed, S21.
-// Author: Jasmine Mohamed El-said Mostafa, S21.
-// ID1: 20230368 _ Filters Inverter , Adding frames, Blur and Rotation.
-// ID2: 20231085 _ Menu & Filters black & white, Flip, Resizing, Purple and Crop.
-// ID3: 20230103 _ Filter Gray scale, Merging, Infrared, Edge detection and Darken&Lighten.
+
+// Authors: Mahmoud Ahmed Ibrahim Mohamed, S22.
+//          Shrouk sayed Ahmed mohammed, S21.
+//          Jasmine Mohamed El-said Mostafa, S21.
+
+// IDs: 20230368 _ Filters Inverter , Adding frames, Blur and Rotation.
+//      20231085 _ Menu & Filters black & white, Flip, Resizing, Purple and Crop.
+//      20230103 _ Filter Gray scale, Merging, Infrared, Edge detection and Darken&Lighten.
+
 // Emails: ma3549681@gmail.com
 //         sayedahmedroka@gmail.com
 //         jasminemohamed174005@gmail.com
+
+// Repository link: https://github.com/Shrouk-Sharaf/CS112_projects
 #include "Image_Class.h"
 #include <cmath>
 #include <iostream>
@@ -76,7 +82,7 @@ void Flip(){
     Image image(filename);
     int choice;
     while (true) {
-        cout << "Choose one of the following:\n1) Horizontal\n2) Vertical" << endl;
+        cout << "Choose one of the following:\n1) Vertical\n2) Horizontal" << endl;
         if (!(cin >> choice) || (choice != 1 && choice != 2)) {
             cout << "Invalid choice. Please enter 1 or 2." << endl;
             cin.clear();
