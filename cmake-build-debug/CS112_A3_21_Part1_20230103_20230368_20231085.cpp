@@ -1,3 +1,15 @@
+// File: CS112_A3_21_Part1_20230103_20230368_20231085
+// Purpose: This program includes 14 filters and a menu. The filters include black and white conversion, image flipping,
+//          image inverting, adding frames to pictures, and grayscale conversion, among others.
+// Author: Mahmoud Ahmed Ibrahim Mohamed, S22.
+// Author: Shrouk sayed Ahmed mohammed, S21.
+// Author: Jasmine Mohamed El-said Mostafa, S21.
+// ID1: 20230368 _ Filters Inverter , Adding frames, Blur and Rotation.
+// ID2: 20231085 _ Menu & Filters black & white, Flip, Resizing, Purple and Crop.
+// ID3: 20230103 _ Filter Gray scale, Merging, Infrared, Edge detection and Darken&Lighten.
+// Emails: ma3549681@gmail.com
+//         sayedahmedroka@gmail.com
+//         jasminemohamed174005@gmail.com
 #include "Image_Class.h"
 #include <cmath>
 #include <iostream>
@@ -54,7 +66,7 @@ void Convert_to_BW() {
     cout << "Converted to black and white successfully." << endl;
 }
 void Flip(){
-    cout << "Please enter your file name." << endl;
+    cout <<"Please enter your file name\n";
     string filename, new_file;
     cin >> filename;
     while (!isvalidExtension(filename)) {
@@ -170,6 +182,10 @@ void CropImage(){
     cout << "Please enter your file name" << endl;
     string filename;
     cin >> filename;
+    while (!isvalidExtension(filename)) {
+        cout << "invalid file name! please enter a valid one." << endl;
+        cin >> filename;
+    }
     int X, Y, newWidth, newHeight;
     cout << "Enter the starting X-coordinate of the crop region\n";
     cin >> X;
@@ -193,14 +209,6 @@ void CropImage(){
             }
         }
     }
-    croppedImage.width = newWidth;
-    croppedImage.height = newHeight;
-    swap(image.imageData, croppedImage.imageData);
-    swap(image.width, croppedImage.width);
-    swap(image.height, croppedImage.height);
-    if (croppedImage.imageData != nullptr) {
-        stbi_image_free(croppedImage.imageData);
-    } // if I want to avoid memory leak, I should use this
     string saved_file;
     cout << "Please enter the file name and extension for the saved cropped image" << endl;
     cin >> saved_file;
@@ -208,7 +216,7 @@ void CropImage(){
         cout << "invalid file name! please enter a valid one." << endl;
         cin >> saved_file;
     }
-    image.saveImage(saved_file);
+    croppedImage.saveImage(saved_file); // Save the cropped image directly.
     cout << "The image has been cropped successfully" << endl;
 }
 void Framed_image(){
@@ -616,18 +624,14 @@ Image Resizing(Image image, int newWidth, int newHeight) {
     // Copy resized image to the original image
     return resizedImage;
 }
-void merging_image(string file_name1, string file_name2, string saved_file, int choice) {
-    Image image1(file_name1);
-    Image image2(file_name2);
+void merging_image(string file_name1, string file_name2, const string& saved_file, int choice) {
+    Image image1(std::move(file_name1));
+    Image image2(std::move(file_name2));
     if (choice == 1) {
         int max_width = max(image1.width, image2.width);
         int max_height = max(image1.height, image2.height);
-
-        // Resize images
         Image re1 = Resizing(image1, max_width, max_height);
         Image re2 = Resizing(image2, max_width, max_height);
-
-        // Merge resized images
         float variable = 0.5;
         Image new_image(max_width, max_height);
         for (int i = 0; i < max_width; i++) {
@@ -640,47 +644,57 @@ void merging_image(string file_name1, string file_name2, string saved_file, int 
                 }
             }
         }
-        // Save merged image
         new_image.saveImage(saved_file);
-
-    } else if (choice == 2) {// merge using cropping
+    } else if (choice == 2) {
         int min_width=min(image1.width,image2.width);
         int min_height=min(image1.height,image2.height);
         Image new_image(min_width,min_height);
-        // loop on the smallest width and smallest height
-        for(int i=0;i<min_width;i++)
-        {
-            for(int j=0;j<min_height;j++)
-            {
-                for(int k=0;k<3;k++)
-                {
+        for(int i=0;i<min_width;i++){
+            for(int j=0;j<min_height;j++){
+                for(int k=0;k<3;k++){
                     new_image(i,j,k)=(image1(i,j,k)+image2(i,j,k))/2;
                     if(new_image(i,j,k)>255)
-                    {
                         new_image(i,j,k)=255;
-                    }
                 }
             }
-        }//save the new image
+        }
         new_image.saveImage(saved_file);
 
     }
     else
-    {
         cout<<"Invalid Input! please enter a valid one. "<<endl;
-    }
 }
 void MergeImagesAndSave() {
     string file_name1, file_name2, saved_file;
     int choice;
     cout << "Please enter your first file name " << endl;
     cin >> file_name1;
+    while (!isvalidExtension(file_name1)) {
+        cout << "invalid file name! please enter a valid one." << endl;
+        cin >> file_name1;
+    }
     cout << "Please enter your second file name " << endl;
     cin >> file_name2;
+    while (!isvalidExtension(file_name2)) {
+        cout << "invalid file name! please enter a valid one." << endl;
+        cin >> file_name2;
+    }
     cout << "Enter the file name and extension for the saved filtered image" << endl;
     cin >> saved_file;
+    while (!isvalidExtension(saved_file)) {
+        cout << "invalid file name! please enter a valid one." << endl;
+        cin >> saved_file;
+    }
     cout << "If two images have different dimensions what do you want to do this filter by:\n1)resizing\n2)cropping" << endl;
-    cin >> choice;
+    while(true){
+        if(!(cin>>choice)||(choice!=1 && choice!=2)){
+            cout<<"invalid choice! please enter 1 or 2."<<endl;
+            cin.clear();
+            while(cin.get()!='\n');
+        }
+        else
+            break;
+    }
     cout << "The two images have been merged successfully" << endl;
     merging_image(file_name1, file_name2, saved_file,choice);
 }
@@ -688,10 +702,25 @@ int main() {
     while (true) {
         int choice;
         while (true) {
-            cout << "Choose one of the following filters:\n1) Convert to black and white\n2) Flip image\n3) Invert Image"
-                    "\n4) Add Frames to the image\n5) Gray scale\n6) Crop image\n7) Resize\n8) Purple filter\n9) Rotate"
-                    "\n10) Blur\n11) Darken or lighten\n12) Edge detection\n 13) Infrared\n14) Merge\n15) Exit";
-            if (!(cin >> choice) || choice < 1 || choice > 16) {
+           cout << "====================== Image Filter Menu ======================\n"
+                   " 1) Convert to Black and White                                \n"
+                   " 2) Flip Image                                                \n"
+                   " 3) Invert Image Colors                                       \n"
+                   " 4) Add Frame to Image                                        \n"
+                   " 5) Convert to Grayscale                                      \n"
+                   " 6) Crop Image                                                \n"
+                   " 7) Resize Image                                              \n"
+                   " 8) Apply Purple Filter                                       \n"
+                   " 9) Rotate Image                                              \n"
+                   " 10) Apply Blur Effect                                        \n"
+                   " 11) Darken or Lighten Image                                  \n"
+                   " 12) Perform Edge Detection                                   \n"
+                   " 13) Apply Infrared Effect                                    \n"
+                   " 14) Merge Images                                             \n"
+                   " 15) Exit Application                                         \n"
+                   "===============================================================\n"
+                   "================== Please enter your choice ===================\n";
+           if (!(cin >> choice) || choice < 1 || choice > 16) {
                 cout << "Invalid choice ! Please enter a valid option." << endl;
                 cin.clear();
                 while (cin.get() != '\n');
