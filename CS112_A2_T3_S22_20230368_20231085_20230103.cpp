@@ -90,6 +90,8 @@ int main() { // Main function
     }
     return 0;
 }
+
+
 /* the algorithm
 1-create a function to calculate the greatest common divisor of two integers a,b
 2-create a function (simplification) which simplify the fraction by finding their GCD and divide them by GCD
@@ -106,101 +108,3 @@ int main() { // Main function
 13- if user enter - we will call subtraction function
 14-if user enter * we call multiplication function
 15- if user entered / we call division function
-
-
-
-Algorithm for the Ciphers
-
-Simple substitution cipher:
-1. Encryption Function (`encryption`):
-   - Initialize an array `alpha` containing alphabets from 'a' to 'z'.
-   - Create a modified alphabet `modified_alpha` by excluding characters present in the key.
-   - Append the modified alphabet to the key.
-   - Encrypt the text by replacing each character with the corresponding key character.
-   - Return the encrypted text.
-2. Decryption Function (`decryption`):
-   - Initialize an array `alpha` containing alphabets from 'a' to 'z'.
-   - Create a modified alphabet `modified_alpha` by excluding characters present in the key.
-   - Append the modified alphabet to the key.
-   - Create a dictionary `alpha_dict` to map key characters to the original alphabet characters.
-   - Decrypt the text by replacing each character with the corresponding dictionary value.
-   - Return the decrypted text.
-3. Main Function (`main`):
-   - Initialize variables `key`, `text`, and `choice`.
-   - Start a loop to run the program repeatedly until the user chooses to exit.
-   - Prompt the user for encryption, decryption, or exit.
-   - Validate user input for the choice.
-   - If the user chooses to exit, print a message and break out of the loop.
-   - If the user chooses encryption or decryption, proceed with the following steps:
-     - Prompt the user to enter the key.
-     - Validate the key (only alphabets and 5 characters, no repeated characters).
-     - Prompt the user to enter the text.
-     - Perform encryption or decryption based on the user's choice.
-     - Print the encrypted or decrypted text.
-   - End of the loop.
-4. Input Validation:
-   - Validate user input for the choice (1, 2, or 3).
-   - Validate the key (only alphabets and 5 characters, no repeated characters).
-5. Exit Message:
-   - Print an exit message when the user chooses to exit.
-6. Error Handling:
-   - Print error messages for invalid choices and invalid keys.
-This algorithm provides a step-by-step explanation of how the code works and what each function and section of the main function does.
-
-
-XOR Cipher :
-1. Encryption/Decryption Function (`encrypt_decrypt`):
-- Initialize an empty string `text` to store the encrypted/decrypted result.
-- Iterate through each character of the original text:
-- Perform XOR operation between the character and the corresponding character in the key (using modulus to repeat the key if it's shorter than the text).
-- Append the result of the XOR operation to the `text`.
-- Return the encrypted/decrypted `text`.
-2. Hexadecimal to String Conversion Function (`hex_to_string`):
-- Initialize an empty string `result` to store the converted string.
-- Iterate through the hexadecimal string by pairs:
-- Extract two characters from the hexadecimal string.
-- Convert the pair of characters to a single byte and append it to `result`.
-- Return the converted string.
-3. Validation Function (`Valid_option`):
-- Prompt the user for input and validate whether the input is a valid option (1, 2, or 3).
-- Return the valid option.
-4. Main Function:
-- Prompt the user to enter the sentence to be encrypted.
-- Prompt the user to enter the keyword.
-- Validate the keyword (only alphabetic characters).
-- Encrypt the original sentence using the provided keyword.
-- Display the encrypted sentence.
-- Convert the encrypted sentence to a hexadecimal string and display it.
-- Prompt the user to enter the hexadecimal string to be decrypted.
-- Validate the hexadecimal string (only hexadecimal characters).
-- Prompt the user to enter the keyword again for decryption.
-- Decrypt the hexadecimal string using the provided keyword.
-- Display the decrypted sentence.
-5. Input Validation:
-- Validate the keyword for encryption and decryption (only alphabetic characters).
-- Validate the hexadecimal string (only hexadecimal characters).
-6. Error Handling:
-- Print error messages for invalid options, invalid keys, and invalid hexadecimal strings.
-
-
-Vignere cipher:
-1) Print welcome message to the user
-2) A menu will appear to the user if the user choose (Encryption program)
-3) We will ask the user to input the word that he wanted to be encrypted and the keyword which we use to cipher the word
-4) We need to check that the keyword is only alphabets (and capital letters only) so if the user enter a white space or special characters or digits or lower case letters a warning message will print
-5) After taking the word from the user we will loop to check if it is letters or not
-6) If letter we will check if it small or capital if small we will make it capital
-7) Then calculate the encrypted char
-8) After that add the encrypted char to a string variable called encryptedResult
-9) if it is not a letter we will print it without encryption
-10) finally print the encryptedResult
-11) If the user choose from the menu (Decryption program)
-12) A welcome message will print to the user
-13) we will ask the user to enter the encrypted word which he wants to be decrypted
-14) and ask the user to enter the keyword
-15) we must check that the keyword only capital letters if the user enter a white space or small letters or special characters or digits a warning message will appear
-16) after taking the encrypted word from the user we will loop to check if it letter or not
-17) If letter we will calculate the decrypted char and add it to a string variable called decryptionResult
-18) if it is not a letter we will print it without decryption
-19) finally print the decryptedResult
-*/
